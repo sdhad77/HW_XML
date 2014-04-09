@@ -39,6 +39,7 @@ public:
 	void StrCpyFromCmdBuf(); //cmdBuf에서 strBuf로 알파벳인 문자열 일부 복사.
 	void NumberCpyFromCmdBuf();//cmdBuf에서 strBuf로 숫자인 문자열 일부 복사.
 	void ErrorCollection(const char* str); //XPathCmdParser() 함수 호출중에 발생하는 error들을 한곳에서 처리함.
+	int FuncCollection(const char* str); //커맨드 중에 함수 호출이 있을 경우 여기서 처리함.
 
 	int XPathCmdParser(char* _cmdBuf, XMLNode* _XpathRoute);//cmd분석 함수.
 	void Search_All_NonString(XMLNode* _XpathRoute); //Search_All() 함수를 호출하기 위한 함수.
