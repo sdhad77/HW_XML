@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="EUC-KR"?>
+<catalog>
+<cd>
+<title>San DoKaebi</title>
+<artist>기둥SeulKiDoong</artist>
+<country>Korea</country>
+<company>Dongeui</company>
+<price>8000</price>
+<year>1992</year>
+</cd>
+<cd>
+<title>Say Yes</title>
+<artist>Chake&Aska</artist>
+<country>Japan</country>
+<company>Sony 레코드</company>
+<price>12000</price>
+<year>1992</year>
+</cd>
+<cd>
+<title>Hound dog</title>
+<artist>Elvis Presley</artist>
+<country>USA</country>
+<company>RCA</company>
+<price>9000</price>
+<year>1972</year>
+</cd>
+<cd>
+<title>Still got the blues</title>
+<artist>Gary Moore</artist>
+<country>UK</country>
+<company>Virgin records</company>
+<price>10.20</price>
+<year>1990</year>
+</cd>
+<cd>
+<title>Romanza</title>
+<artist>Andrea Bocelli</artist>
+<country>EU</country>
+<company>Polydor</company>
+<price>15000</price>
+<year>1996</year>
+</cd>
+<cd>
+<title>When a man loves a woman</title>
+<artist>Percy Sledge</artist>
+<country>USA</country>
+<company>Atlantic</company>
+<price>8000</price>
+<year>1987</year>
+</cd>
+<cd>
+<title>Pavarotti Gala Concert</title>
+<artist>Luciano Pavarotti</artist>
+<country>UK</country>
+<company>DECCA</company>
+<price>13000</price>
+<year>1991</year>
+</cd>
+ <cd>
+<title>Unchain my heart</title>
+<artist>Joe Cocker</artist>
+<country>USA</country>
+<company>EMI</company>
+<price>10000</price>
+<year>1987</year>
+</cd>
+</catalog>
