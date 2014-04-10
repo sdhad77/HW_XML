@@ -14,31 +14,31 @@ XString::~XString() {
 }
 
 //ch가 알파벳인지 검사하는 함수
-bool XString::checkAlpha(const char ch)
+bool XString::checkAlpha(const wchar_t ch)
 {
-	if ('a' <= ch && ch <= 'z') return true;
-	else if ('A' <= ch && ch <= 'Z') return true;
+	if (L'a' <= ch && ch <= L'z') return true;
+	else if (L'A' <= ch && ch <= L'Z') return true;
 	else return false;
 }
 
 //ch가 숫자인지 검사하는 함수
-bool XString::checkNumber(const char ch)
+bool XString::checkNumber(const wchar_t ch)
 {
-	if ('0' <= ch && ch <= '9') return true;
+	if (L'0' <= ch && ch <= L'9') return true;
 	else return false;
 }
 
 //XML에서 tagName으로 사용가능한 문자인지 검사
-bool XString::checkTagName(const char ch)
+bool XString::checkTagName(const wchar_t ch)
 {
 	if(checkAlpha(ch)) return true;
 	else if(checkNumber(ch)) return true;
-	else if((ch == '_') || (ch == '-') || (ch == '.')) return true;
+	else if((ch == L'_') || (ch == L'-') || (ch == L'.')) return true;
 	else return false;
 }
 
 //문자열str 에서 _ch문자가 있는지 검사하는 함수. 문자열 처음부터 _last 문자가 나타날때 까지 루프를 반복함.
-int XString::checkAnyChar(const char* str, const char _ch, const char _last)
+int XString::checkAnyChar(const wchar_t* str, const wchar_t _ch, const wchar_t _last)
 {
 	int _idx = 0;
 	while (str[_idx] != _last)
@@ -51,7 +51,7 @@ int XString::checkAnyChar(const char* str, const char _ch, const char _last)
 }
 
 //byte order mark**********************
-bool XString::checkByteOrderMark(char* str, int* _idx)
+bool XString::checkByteOrderMark(wchar_t* str, int* _idx)
 {
 	if((    (unsigned char)str[0] == 0xEF)	//0xEFBBBF -> UTF-8의 byte order mark
 		&& ((unsigned char)str[1] == 0xBB)	//BOM이 존재할 경우 그대로 출력시키고
@@ -65,14 +65,14 @@ bool XString::checkByteOrderMark(char* str, int* _idx)
 	return false;
 }
 
-void XString::StrCpyNumber(char* dest, const char* src, int _num)
+void XString::StrCpyNumber(wchar_t* dest, const wchar_t* src, int _num)
 {
-	strncpy(dest, src, _num);
-	dest[_num] = '\0';
+	wcsncpy(dest, src, _num);
+	dest[_num] = L'\0';
 }
 
 //공백제거
-void XString::RemoveBlank(char* _str, int* _idx)
+void XString::RemoveBlank(wchar_t* _str, int* _idx)
 {
-	while((_str[*_idx] == ' ') || (_str[*_idx] == '\t')) (*_idx)++;
+	while((_str[*_idx] == L' ') || (_str[*_idx] == L'\t')) (*_idx)++;
 }

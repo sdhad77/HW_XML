@@ -7,6 +7,8 @@
  */
 #include <iostream>
 #include <fstream>
+#include <locale>
+#include <wchar.h>
 #include "XString.h"
 #include "XMLNode.h"
 using namespace std;
@@ -23,11 +25,11 @@ public:
 	virtual ~XMLParser();
 
 private:
-	char* tempElement;
-	char* tempAttributeName;
-	char* tempAttributeValue;
-	char* buf;			//input 파일을 한줄씩 읽어오기 위한 버퍼
-	char* tempBuf;		//buf에 저장된 문자들을 태그를 기준으로 자르기 위한 버퍼
+	wchar_t* tempElement;
+	wchar_t* tempAttributeName;
+	wchar_t* tempAttributeValue;
+	wchar_t* buf;			//input 파일을 한줄씩 읽어오기 위한 버퍼
+	wchar_t* tempBuf;		//buf에 저장된 문자들을 태그를 기준으로 자르기 위한 버퍼
 
 	int idx;
 	int startIdx;
@@ -37,8 +39,8 @@ private:
 	XMLNode* XpathRoute;
 
 public:
-	int checkAnyChar(const char* str, const char _ch, const char _last);
-	char* checkAmp(char* str);
+	int checkAnyChar(const wchar_t* str, const wchar_t _ch, const wchar_t _last);
+	wchar_t* checkAmp(wchar_t* str);
 
 	int parser(const char* fileName, XMLNode* _XMLNode);
 	void parserPI();

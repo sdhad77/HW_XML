@@ -23,28 +23,28 @@ public:
 	virtual ~XMLNode();
 
 private:
-	char* name;
-	char* value;
+	wchar_t* name;
+	wchar_t* value;
 	XMLNode* parentNode;
 	std::list<XMLNode> attribute;
 	std::list<XMLNode> childNode;
 
 public:
-	char* getValue() {return value;}
-	char* getName() {return name;}
+	wchar_t* getValue() {return value;}
+	wchar_t* getName() {return name;}
 	XMLNode* getParentNode() {return parentNode;}
 	std::list<XMLNode>* getChildNode() {return &childNode;}
 	std::list<XMLNode>* getAttribute() {return &attribute;}
 
-	void setValue(const char* _value);
-	void setName(const char* _name) {strcpy(name, _name);}
+	void setValue(const wchar_t* _value);
+	void setName(const wchar_t* _name) {wcscpy(name, _name);}
 	void setParentNode(XMLNode* _parentNode) {parentNode = _parentNode;}
 	void setChildNode(const XMLNode* _childNode) {childNode.push_back(*_childNode);}
 	void setAttribute(const XMLNode* _attribute) {attribute.push_back(*_attribute);}
 
 	void PrintNode(PrintType _type);
-	void PrintName() {std::cout << name << std::endl;}
-	void PrintValue() {std::cout << value << std::endl;}
+	void PrintName() {wprintf(L"%s\n", name);}
+	void PrintValue() {wprintf(L"%s\n", value);}
 };
 
 #endif /* XMLNODE_H_ */

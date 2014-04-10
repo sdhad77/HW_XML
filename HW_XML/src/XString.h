@@ -19,15 +19,15 @@ public:
 	virtual ~XString();
 
 public:
-	bool checkAlpha(const char ch); //문자 ch가 알파벳인지
-	bool checkNumber(const char ch);//문자 ch가 숫자인지
-	bool checkTagName(const char ch);//문자 ch가 태그 이름으로 사용가능한지
-	int checkAnyChar(const char* str, const char _ch, const char _last); //문자열 str에서 _ch문자 찾기. _last 문자가 등장하기 전까지 찾음.
-	bool checkByteOrderMark(char* str, int* _idx);
+	bool checkAlpha(const wchar_t ch); //문자 ch가 알파벳인지
+	bool checkNumber(const wchar_t ch);//문자 ch가 숫자인지
+	bool checkTagName(const wchar_t ch);//문자 ch가 태그 이름으로 사용가능한지
+	int checkAnyChar(const wchar_t* str, const wchar_t _ch, const wchar_t _last); //문자열 str에서 _ch문자 찾기. _last 문자가 등장하기 전까지 찾음.
+	bool checkByteOrderMark(wchar_t* str, int* _idx);
 
-	void StrCpyNumber(char* dest, const char* src, int _num);
+	void StrCpyNumber(wchar_t* dest, const wchar_t* src, int _num);
 
-	void RemoveBlank(char* _str, int* _idx); //공백제거
+	void RemoveBlank(wchar_t* _str, int* _idx); //공백제거
 };
 
 #endif /* XSTRING_H_ */

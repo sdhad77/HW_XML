@@ -6,6 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 #include <iostream>
+#include <wchar.h>
 #include <locale>
 #include "XMLNode.h"
 #include "XMLParser.h"
@@ -18,8 +19,9 @@ using namespace std;
 int main()
 {
 	setlocale(LC_ALL,"");
+
 	char* fileName	= 	new char[MAX_CHAR_SIZE];
-	char* cmdBuf 	= 	new char[MAX_CHAR_SIZE];
+	wchar_t* cmdBuf = 	new wchar_t[MAX_CHAR_SIZE];
 
 	XPath Xpath;
 	XMLParser XParser;
@@ -27,7 +29,7 @@ int main()
 
 	while(1)
 	{
-		cout << "Input FileName(quit) : ";
+		wcout << L"Input FileName(quit) : ";
 		cin >> fileName;
 
 		if(!strcmp(fileName, "quit"))
@@ -43,10 +45,10 @@ int main()
 
 	while(1)
 	{
-		cout << "cmd : ";
-		cin >> cmdBuf;
+		wcout << L"cmd : ";
+		wcin >> cmdBuf;
 
-		if(!strcmp(cmdBuf, "quit")) break;
+		if(!wcscmp(cmdBuf, L"quit")) break;
 		else Xpath.XPathCmdParser(cmdBuf, XpathRoute);
 	}
 
