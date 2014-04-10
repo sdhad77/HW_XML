@@ -62,11 +62,23 @@ void XPath::ErrorCollection(const char* str)
 	ClearQ();
 }
 
-int XPath::FuncCollection(const char* str)
+void XPath::FuncCollection(const char* str)
 {
 	if(!strcmp(str, "last"))
 	{
-		return searchNodeQ.size();
+		int copyCmdIdx = cmdIdx;
+		char* tempNum = new char[MAX_CHAR_SIZE];
+		itoa(searchNodeQ.size(),tempNum,10);
+		strncpy(&cmdBuf[cmdIdx-4],tempNum,strlen(tempNum));
+		/*
+		while(cmdBuf[copyCmdIdx + 2 + strlen(tempNum)] != '\0')
+		{
+			cmdBuf[copyCmdIdx-4 + strlen(tempNum)] = cmdBuf[copyCmdIdx + 2 + strlen(tempNum)];
+			copyCmdIdx++;
+		}
+		cmdBuf[copyCmdIdx-3] = '\0';
+		cmdIdx = cmdIdx - 5;*/
+		delete[] tempNum;
 	}
 	else if(!strcmp(str, "position"))
 	{
@@ -78,7 +90,6 @@ int XPath::FuncCollection(const char* str)
 	}
 
 	cmdBuf[cmdIdx] = '\0'; //XPathCmdParser()의 while 반복문 정지시키는 기능.
-	return -1;
 }
 
 //입력받은 커맨드를 분석하고 실행함.
@@ -101,7 +112,7 @@ int XPath::XPathCmdParser(char* _cmdBuf, XMLNode* _XpathRoute)
 
 	while(cmdBuf[cmdIdx] != '\0')
 	{
-		RemoveBlank(cmdBuf, &cmdIdx);
+		RemoveBlank(cmdBuf, &cmdIdx);std::cout << cmdBuf << std::endl;
 
 		//cmd : /
 		if(cmdBuf[cmdIdx] == '/')
@@ -113,7 +124,8 @@ int XPath::XPathCmdParser(char* _cmdBuf, XMLNode* _XpathRoute)
 				if(cmdBuf[cmdIdx+2] == '*')
 				{
 					cmdIdx = cmdIdx + 3; // cmd : //* 이후로 인덱스 이동
-					Search_All_NonString(_XpathRoute); //문자열에 관계없이 루트노드부터 전부 저장.
+					Search_All_NonString(searchNodeQ.front()); //문자열에 관계없이 루트노드부터 전부 저장.
+					searchNodeQ.pop(); //방금 했던 탐색의 루트가 됐던 큐 제거
 					printType = print_Name; //출력 타입을 이름으로 설정.
 				}
 				//cmd : //@

@@ -6,6 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 #include <iostream>
+#include <locale>
 #include "XMLNode.h"
 #include "XMLParser.h"
 #include "XPath.h"
@@ -16,6 +17,7 @@ using namespace std;
 
 int main()
 {
+	setlocale(LC_ALL,"");
 	char* fileName	= 	new char[MAX_CHAR_SIZE];
 	char* cmdBuf 	= 	new char[MAX_CHAR_SIZE];
 
