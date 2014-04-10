@@ -65,6 +65,12 @@ bool XString::checkByteOrderMark(char* str, int* _idx)
 	return false;
 }
 
+bool XString::checkOperator(const char ch)
+{
+	if (ch == '+' || ch == '-' || ch == '*') return true;
+	else return false;
+}
+
 void XString::StrCpyNumber(char* dest, const char* src, int _num)
 {
 	strncpy(dest, src, _num);

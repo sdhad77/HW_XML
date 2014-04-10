@@ -6,7 +6,6 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 #include <iostream>
-#include <locale>
 #include "XMLNode.h"
 #include "XMLParser.h"
 #include "XPath.h"
@@ -17,7 +16,6 @@ using namespace std;
 
 int main()
 {
-	setlocale(LC_ALL,"");
 	char* fileName	= 	new char[MAX_CHAR_SIZE];
 	char* cmdBuf 	= 	new char[MAX_CHAR_SIZE];
 
@@ -41,10 +39,12 @@ int main()
 		else if(!XParser.parser(fileName, XpathRoute)) break;
 	}
 
+	cin.getline(cmdBuf, MAX_CHAR_SIZE-1);
+
 	while(1)
 	{
 		cout << "cmd : ";
-		cin >> cmdBuf;
+		cin.getline(cmdBuf, MAX_CHAR_SIZE-1);// >> cmdBuf;
 
 		if(!strcmp(cmdBuf, "quit")) break;
 		else Xpath.XPathCmdParser(cmdBuf, XpathRoute);

@@ -78,7 +78,7 @@ char* XMLParser::checkAmp(char* str)
 		else if(!strcmp(tempCheckAmp, "quot"))	str[_idx] = '"';
 		else
 		{
-			std::cout << "존재하지 않는 Entity입니다." << std::endl;
+			std::cout << "Entity error" << std::endl;
 			std::cout << str << std::endl;
 			break;
 		}
@@ -199,7 +199,7 @@ int XMLParser::parser(const char* fileName, XMLNode* _XMLNode)
 	ifstream fin(fileName);
 	if(!fin)
 	{
-		cout << "파일이 존재하지 않습니다." << endl;
+		cout << "fileName error" << endl;
 		return 1;
 	}
 
@@ -237,7 +237,6 @@ int XMLParser::parser(const char* fileName, XMLNode* _XMLNode)
 			else
 			{
 				parserContent();
-				cout << "알파벳과 숫자 이외의 문자가 입력되었습니다." << endl;
 				cout << buf << endl;
 			}
 		}

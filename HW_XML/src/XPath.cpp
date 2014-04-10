@@ -46,16 +46,18 @@ void XPath::NumberCpyFromCmdBuf()
 //command 읽는중에 발생하는 에러들을 한곳에 모아놓음.
 void XPath::ErrorCollection(const char* str)
 {
-	if(!strcmp(str, "cmd"))			std::cout << "cmd를 다시 입력해 주세요." << std::endl;
-	else if(!strcmp(str, "//@"))	std::cout << "잘못입력하였습니다." << std::endl;
-	else if(!strcmp(str, "//"))		std::cout << "// 이후 알파벳,*,@ 이외의 문자가 입력되었습니다." << std::endl;
-	else if(!strcmp(str, "/"))		std::cout << "/ 이후 처리되지 않은 문자가 나타났습니다." << std::endl;
-	else if(!strcmp(str, "[999]"))	std::cout << "입력된 숫자가 너무 큽니다." << std::endl;
-	else if(!strcmp(str, "[999"))	std::cout << "[로 시작하면 ]로 끝나야 합니다." << std::endl;
-	else if(!strcmp(str, "[func("))	std::cout << ") 는 어디에.." << std::endl;
-	else if(!strcmp(str, "[~"))		std::cout << "[ 이후 처리되지 않은 문자가 입력되었습니다." << std::endl;
-	else if(!strcmp(str, "[name~$"))std::cout << "[a 이후 처리되지 않은 문자가 입력되었습니다." << std::endl;
-	else if(!strcmp(str, "FuncName"))std::cout << "아직 처리 되지 않은 함수명이 입력되었습니다." << std::endl;
+	if(!strcmp(str, "cmd"))			std::cout << "cmd error" << std::endl;
+	else if(!strcmp(str, "//@"))	std::cout << "//@ error" << std::endl;
+	else if(!strcmp(str, "//"))		std::cout << "// error" << std::endl;
+	else if(!strcmp(str, "/"))		std::cout << "/ error" << std::endl;
+	else if(!strcmp(str, "[999]"))	std::cout << "[999] error" << std::endl;
+	else if(!strcmp(str, "[-999]"))	std::cout << "[-999] error" << std::endl;
+	else if(!strcmp(str, "[999"))	std::cout << "] error" << std::endl;
+	else if(!strcmp(str, "[func("))	std::cout << ") error" << std::endl;
+	else if(!strcmp(str, "[~"))		std::cout << "[ error" << std::endl;
+	else if(!strcmp(str, "[name~$"))std::cout << "[a error" << std::endl;
+	else if(!strcmp(str, "FuncName"))std::cout << "function name error" << std::endl;
+	else if(!strcmp(str, "operator"))std::cout << "operator error" << std::endl;
 	else							std::cout << "error" << std::endl;
 
 	cmdBuf[cmdIdx] = '\0'; //XPathCmdParser()의 while 반복문 정지시키는 기능.
@@ -70,26 +72,65 @@ void XPath::FuncCollection(const char* str)
 		char* tempNum = new char[MAX_CHAR_SIZE];
 		itoa(searchNodeQ.size(),tempNum,10);
 		strncpy(&cmdBuf[cmdIdx-4],tempNum,strlen(tempNum));
-		/*
-		while(cmdBuf[copyCmdIdx + 2 + strlen(tempNum)] != '\0')
+
+		while(cmdBuf[copyCmdIdx + 1 + strlen(tempNum)] != '\0')
 		{
-			cmdBuf[copyCmdIdx-4 + strlen(tempNum)] = cmdBuf[copyCmdIdx + 2 + strlen(tempNum)];
+			cmdBuf[copyCmdIdx-4 + strlen(tempNum)] = cmdBuf[copyCmdIdx + 1 + strlen(tempNum)];
 			copyCmdIdx++;
 		}
 		cmdBuf[copyCmdIdx-3] = '\0';
-		cmdIdx = cmdIdx - 5;*/
+		cmdIdx = cmdIdx - 5;
 		delete[] tempNum;
 	}
 	else if(!strcmp(str, "position"))
 	{
 		std::cout << "position" << std::endl;
+		cmdBuf[cmdIdx] = '\0';
+	}
+	else if(!strcmp(str, "operator"))
+	{
+		int num1, num2, lastCmdIdx;
+		int copyCmdIdx = cmdIdx;
+		char tempOperator;
+		char* tempNum = new char[MAX_CHAR_SIZE];
+
+		NumberCpyFromCmdBuf(); //문자열중 연속된 숫자들만 strBuf로 복사
+		num1 = atoi(strBuf);
+		RemoveBlank(cmdBuf, &cmdIdx);//혹시 모를 공백 제거
+
+		tempOperator = cmdBuf[cmdIdx];
+		if(!checkOperator(tempOperator)) ErrorCollection("operator");
+
+		cmdIdx = cmdIdx + 1;
+		RemoveBlank(cmdBuf, &cmdIdx);//혹시 모를 공백 제거
+		if(!checkNumber(cmdBuf[cmdIdx])) ErrorCollection("operator"); // 연산자 이후 숫자가 아니면 에러
+
+		NumberCpyFromCmdBuf(); //문자열중 연속된 숫자들만 strBuf로 복사
+		num2 = atoi(strBuf);
+
+		if(tempOperator == '+') num1 = num1 + num2;
+		else if(tempOperator == '-') num1 = num1 - num2;
+		else if(tempOperator == '*') num1 = num1 * num2;
+		else ErrorCollection("operator"); // 미지원 연산자 에러
+
+		itoa(num1, tempNum, 10);
+		lastCmdIdx = cmdIdx;
+		cmdIdx = copyCmdIdx-1;
+		strncpy(&cmdBuf[copyCmdIdx],tempNum,strlen(tempNum));
+
+		while(cmdBuf[lastCmdIdx] != '\0')
+		{
+			cmdBuf[copyCmdIdx+strlen(tempNum)] = cmdBuf[lastCmdIdx];
+			lastCmdIdx++;copyCmdIdx++;
+		}
+		cmdBuf[copyCmdIdx+strlen(tempNum)] = '\0';
+
+		delete[] tempNum;
 	}
 	else
 	{
 		ErrorCollection("FuncName");
 	}
-
-	cmdBuf[cmdIdx] = '\0'; //XPathCmdParser()의 while 반복문 정지시키는 기능.
 }
 
 //입력받은 커맨드를 분석하고 실행함.
@@ -112,7 +153,7 @@ int XPath::XPathCmdParser(char* _cmdBuf, XMLNode* _XpathRoute)
 
 	while(cmdBuf[cmdIdx] != '\0')
 	{
-		RemoveBlank(cmdBuf, &cmdIdx);std::cout << cmdBuf << std::endl;
+		RemoveBlank(cmdBuf, &cmdIdx);
 
 		//cmd : /
 		if(cmdBuf[cmdIdx] == '/')
@@ -185,6 +226,7 @@ int XPath::XPathCmdParser(char* _cmdBuf, XMLNode* _XpathRoute)
 			if(checkNumber(cmdBuf[cmdIdx+1]))
 			{
 				cmdIdx = cmdIdx + 1; //cmd : [1   1로인덱스 이동
+				int tempIdx = cmdIdx;
 				NumberCpyFromCmdBuf(); //문자열중 연속된 숫자들만 strBuf로 복사
 				RemoveBlank(cmdBuf, &cmdIdx);//혹시 모를 공백 제거
 
@@ -193,7 +235,8 @@ int XPath::XPathCmdParser(char* _cmdBuf, XMLNode* _XpathRoute)
 				{
 					cmdIdx++;
 					int selectCnt = atoi(strBuf); //strBuf에 있는 문자열 -> int형으로 변경. []안에 있는 숫자가 몇인지 저장.
-					if((int)searchNodeQ.size() >= selectCnt)
+					if(selectCnt <= 0) ErrorCollection("[-999]");
+					else if((int)searchNodeQ.size() >= selectCnt)
 					{
 						while(--selectCnt) searchNodeQ.pop(); //[]안의 숫자만큼 큐안의 노드 제거
 						searchNodeQ.push(searchNodeQ.front());//원하는 노드를 제일 뒤로 넣음
@@ -201,6 +244,11 @@ int XPath::XPathCmdParser(char* _cmdBuf, XMLNode* _XpathRoute)
 						printType = print_Value;
 					}
 					else ErrorCollection("[999]");
+				}
+				else if(checkOperator(cmdBuf[cmdIdx]))
+				{
+					cmdIdx = tempIdx;
+					FuncCollection("operator");
 				}
 				else ErrorCollection("[999");
 			}
@@ -219,8 +267,6 @@ int XPath::XPathCmdParser(char* _cmdBuf, XMLNode* _XpathRoute)
 						cmdIdx = cmdIdx + 1; //cmd : [func( 에서 f위치로 이동.
 						StrCpyFromCmdBuf(); //cmd : [func( 에서 f부터 알파벳,숫자,-_. 가 아닌곳 직전까지 복사. (앞까지 복사될것임.
 						FuncCollection(strBuf);//위에서 복사한 문자열로 어떤 함수인지 처리.
-
-						cmdBuf[cmdIdx] = '\0';
 					}
 					else ErrorCollection("[func(");
 				}

@@ -24,6 +24,7 @@ public:
 	bool checkTagName(const char ch);//문자 ch가 태그 이름으로 사용가능한지
 	int checkAnyChar(const char* str, const char _ch, const char _last); //문자열 str에서 _ch문자 찾기. _last 문자가 등장하기 전까지 찾음.
 	bool checkByteOrderMark(char* str, int* _idx);
+	bool checkOperator(const char ch);//문자 ch가 연산자인지
 
 	void StrCpyNumber(char* dest, const char* src, int _num);
 
